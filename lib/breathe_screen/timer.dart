@@ -69,7 +69,7 @@ class TimerTextState extends State<TimerText> {
       children: <Widget>[
           new RepaintBoundary(
             child: new SizedBox(
-              height: 72.0,
+              height: 82.0,
               child: new MinutesAndSeconds(dependencies: dependencies),
             ),
           ),
@@ -115,6 +115,6 @@ class MinutesAndSecondsState extends State<MinutesAndSeconds> {
   Widget build(BuildContext context) {
     String minutesStr = (minutes % 60).toString().padLeft(2, '0');
     String secondsStr = (seconds % 60).toString().padLeft(2, '0');
-    return new Text('$minutesStr:$secondsStr.', style: dependencies.textStyle);
+    return new Text('$minutesStr:$secondsStr', style: dependencies.textStyle);
   }
 }

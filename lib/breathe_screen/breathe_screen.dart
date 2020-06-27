@@ -2,6 +2,15 @@ import 'package:breathe/breathe_screen/timer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+enum SessionState {
+  Initial,
+  Starting,
+  HoldBreathIn,
+  HoldBreathOut,
+  BreathingIn,
+  BreathingOut,
+  Ended
+}
 //model for a breathing session
 class BreatheSession {
   int inBreaths; //how many in breaths
@@ -21,6 +30,8 @@ class _BreatheScreenState extends State<BreatheScreen>
   var selected = false;
   AnimationController controller;
 
+  var sessionState = SessionState.Initial;
+
   final TimerModel timer = new TimerModel();
 
   //  Animation growingContainer;
@@ -31,6 +42,40 @@ class _BreatheScreenState extends State<BreatheScreen>
     //  controller = AnimationController(vsync: this, duration: Duration(seconds:3));
   }
 
+  start() {
+    setState(() {
+        selected = !selected;
+        timer.stopwatch.start();
+        this.sessionState = SessionState.Starting;
+    });
+  }
+
+  stop() {
+    setState(() {
+        selected = !selected;
+        timer.stopwatch.stop();
+        this.sessionState = SessionState.Ended;
+    });
+  }
+
+  //returns the action button based on session state
+  Widget actionButton(SessionState state){
+    //if state is initial, show start button
+    if (state == SessionState.Initial) {
+      return FloatingActionButton(
+        onPressed: this.start,
+        child: Icon(Icons.play_arrow), 
+      );
+    
+    //Else show stop button
+    } else {
+      return FloatingActionButton(
+        onPressed: this.stop,
+        child: Icon(Icons.stop)
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,18 +83,12 @@ class _BreatheScreenState extends State<BreatheScreen>
       body: Stack(
         children: [
           this._background(context), //background image/animation
+          TimerText(dependencies: this.timer,),
           this.foreground(context) //everything in the foreground
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            selected = !selected;
-            timer.stopwatch.start();
-          });
-        },
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      floatingActionButton: this.actionButton(this.sessionState),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
@@ -115,11 +154,6 @@ class _BreatheScreenState extends State<BreatheScreen>
                             textAlign: TextAlign.center,
                           )
                         : Text(""),
-                  ),
-                  Column(
-                    children: [
-                      TimerText(dependencies: this.timer,)
-                    ],
                   ),
                 ],
               ),
