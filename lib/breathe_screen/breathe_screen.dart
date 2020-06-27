@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 //model for a breathing session
@@ -15,13 +16,7 @@ class BreatheScreen extends StatefulWidget {
 }
 
 class _BreatheScreenState extends State<BreatheScreen> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  var selected = false;
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +29,11 @@ class _BreatheScreenState extends State<BreatheScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
+        onPressed: () {
+          setState(() {
+            selected = !selected;
+          });
+        },
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
@@ -43,38 +41,64 @@ class _BreatheScreenState extends State<BreatheScreen> {
 
   Widget background(BuildContext context) {
     return Container(
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
+        child: Column(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Expanded(
             flex: 1,
             child: FittedBox(
-              fit: BoxFit.fitWidth,
-              child: ConstrainedBox(
-                constraints: BoxConstraints(minWidth: 1, minHeight: 1),
-                child:  Image.asset('assets/images/mountains.png'),
-              )
-            ) 
-          ),
-        ],
-      )
-    );
+                fit: BoxFit.fitWidth,
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minWidth: 1, minHeight: 1),
+                  child: Image.asset('assets/images/mountains.png'),
+                ))),
+      ],
+    ));
   }
 
   Widget foreground(BuildContext context) {
+    AnimationController control;
     return Container(
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            Padding(
+              padding: EdgeInsets.only(top: 440),
+              child: AnimatedContainer(
+                duration: Duration(seconds: 1),
+                color: Colors.white,
+                width: 500,
+                height: selected ? 50 : 150,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    AnimatedContainer(
+                      duration: Duration(seconds: 1),
+                      width: selected ? 30 : 100,
+                      height: selected ? 30 : 100,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.yellow,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: selected
+                          ? Text(
+                              'Start Breathing Excercise',
+                              style: TextStyle(
+                                fontSize: 20,
+                              ),
+                              textAlign: TextAlign.center,
+                            )
+                          : Text(""),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),
