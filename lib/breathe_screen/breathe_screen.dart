@@ -195,6 +195,10 @@ class _BreatheScreenState extends State<BreatheScreen>
     return Stack(
       children: [
         this._mountainLayer(context),
+        Align(
+          alignment: Alignment.center,
+          child: Container(color: Colors.black, width: 100, height: 100,)
+        ),
       ],
     );
   }
@@ -216,6 +220,37 @@ class _BreatheScreenState extends State<BreatheScreen>
     );
   }
 
+  double getDiameter(SessionState state) {
+    double diameter;
+    switch (state) {
+      case SessionState.Initial:
+        diameter = 30;
+        break;
+      case SessionState.Starting:
+      diameter = 30;
+      break;
+      case SessionState.BreathingIn:
+        diameter = 100;
+        break;
+      case SessionState.BreathingOut:
+        diameter = 30;
+        break;
+      case SessionState.HoldBreathIn:
+        diameter = 100;
+        break;
+      case SessionState.HoldBreathOut:
+        diameter = 30;
+        break;
+      case SessionState.Ended:
+        diameter = 100;
+        break;
+      default:
+        diameter = 5;
+        break;
+    }
+    return diameter;
+  }
+
 
   Widget foreground(BuildContext context) {
     if (display == null) {
@@ -229,27 +264,35 @@ class _BreatheScreenState extends State<BreatheScreen>
           Padding(
             padding: EdgeInsets.only(top: 440),
             child: AnimatedContainer(
-              duration: Duration(seconds: 1),
+              duration: Duration(seconds: 5),
               color: Colors.white,
               width: 500,
-              height: selected ? 50 : 150,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              height: 150,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  AnimatedContainer(
-                    duration: Duration(seconds: 1),
-                    width: selected ? 30 : 100,
-                    height: selected ? 30 : 100,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.yellow,
-                    ),
-                    child: countDown != null? Text('$countDown') : Text(''),
-                    alignment: Alignment.center,
-                  ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
+                    padding: const EdgeInsets.only(top: 15),
                     child: Text(instructionText(sessionState)),
+                  ),
+                  Expanded(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        AnimatedContainer(
+                          duration: Duration(seconds: 5),
+                          width: getDiameter(sessionState),
+                          height: getDiameter(sessionState),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.yellow,
+                          ),
+                          child: countDown != null? Text('$countDown') : Text(''),
+                          alignment: Alignment.center,
+                        ),
+                      ]
+                    )
                   ),
                 ],
               ),
