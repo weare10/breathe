@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'dart:async';
 
 //model for a breathing session
 class BreatheSession {
@@ -41,6 +42,7 @@ class _BreatheScreenState extends State<BreatheScreen>
         onPressed: () {
           setState(() {
             selected = !selected;
+            startTimer();
           });
         },
         child: Icon(Icons.add),
@@ -74,7 +76,38 @@ class _BreatheScreenState extends State<BreatheScreen>
     );
   }
 
+  Timer _timer;
+  var _start = 5;
+  void startTimer() {
+    const oneSec = const Duration(seconds: 3);
+    _timer = Timer.periodic(
+      oneSec,
+      (Timer timer) => setState(
+        () {
+          if (_start < 1) {
+            timer.cancel();
+          } else {
+            _start = _start - 1;
+          }
+        },
+      ),
+    );
+  }
+
+  var display;
+  breatheIn() {
+    if (_start == 0) {
+      setState(() {
+        display = "Breathe In";
+      });
+    }
+  }
+
   Widget foreground(BuildContext context) {
+    if (display == null) {
+      display = 'Get ready';
+    }
+    breatheIn();
     return Container(
       alignment: Alignment.bottomCenter,
       child: Column(
@@ -98,6 +131,8 @@ class _BreatheScreenState extends State<BreatheScreen>
                       shape: BoxShape.circle,
                       color: Colors.yellow,
                     ),
+                    child: selected ? Text('') : Text('$_start'),
+                    alignment: Alignment.center,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0),
@@ -109,18 +144,7 @@ class _BreatheScreenState extends State<BreatheScreen>
                             ),
                             textAlign: TextAlign.center,
                           )
-                        : Text(""),
-                  ),
-                  Column(
-                    children: [
-                      Text(
-                        '00:00',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                        ),
-                      ),
-                    ],
+                        : Text('$display'),
                   ),
                 ],
               ),
