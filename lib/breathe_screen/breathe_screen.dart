@@ -10,7 +10,8 @@ enum SessionState {
   HoldBreathOut,
   BreathingIn,
   BreathingOut,
-  Ended
+  Ended,
+  Invalid
 }
 //model for a breathing session
 class BreatheSession {
@@ -35,6 +36,8 @@ class _BreatheScreenState extends State<BreatheScreen>
 
   final TimerModel timer = new TimerModel();
   String display;
+  int countDown = 0;
+  Timer countDownTimer;
 
   //  Animation growingContainer;
   //  Animation growingCircle;
@@ -48,18 +51,74 @@ class _BreatheScreenState extends State<BreatheScreen>
     setState(() {
         selected = !selected;
         timer.stopwatch.start();
-        this.startTimer();
-        this.sessionState = SessionState.Starting;
+        this.beginExcerciseRoutine();
     });
   }
 
+
   stop() {
     setState(() {
-        selected = !selected;
         timer.stopwatch.stop();
         this.sessionState = SessionState.Ended;
+        this.countDownTimer.cancel();
+        this.countDown = null;
     });
   }
+
+  navigateToChart() {
+    //TODO
+  }
+
+
+  final oneSec = const Duration(seconds: 1);
+  beginExcerciseRoutine(){
+    this.sessionState = nextState(sessionState);
+    countDown = 5;
+    countDownTimer = Timer.periodic(oneSec, (timer) { 
+      //Decrement the countDown
+      setState(() {
+        countDown--;
+        if (countDown < 0){
+          countDown = 5;
+          sessionState = nextState(sessionState);
+        }
+      
+      });
+
+    });
+  }
+
+  SessionState nextState(SessionState state){
+    SessionState next;
+    switch (state) {
+      case SessionState.Initial:
+        next = SessionState.Starting;
+        break;
+      case SessionState.Starting:
+        next = SessionState.BreathingIn;
+        break;
+      case SessionState.BreathingIn:
+        next = SessionState.HoldBreathIn;
+        break;
+      case SessionState.BreathingOut:
+        next = SessionState.HoldBreathOut;
+        break;
+      case SessionState.HoldBreathIn:
+      next = SessionState.BreathingOut;
+        break;
+      case SessionState.HoldBreathOut:
+        next = SessionState.BreathingIn;
+        break;
+      case SessionState.Ended:
+        next = SessionState.Ended;
+        break;
+      default:
+        next = SessionState.Invalid;
+        break;
+    }
+    return next;
+  }
+
 
   //Returns the appropriate instruction string based
   //on the given state
@@ -69,6 +128,9 @@ class _BreatheScreenState extends State<BreatheScreen>
       case SessionState.Initial:
         text = "Press Play to Begin";
         break;
+      case SessionState.Starting:
+      text = "Get Ready...";
+      break;
       case SessionState.BreathingIn:
         text = "Breath in Slowly";
         break;
@@ -99,7 +161,12 @@ class _BreatheScreenState extends State<BreatheScreen>
       );
     
     //Else show stop button
-    } else {
+    } else if (state == SessionState.Ended) {
+      return FloatingActionButton(
+        onPressed: this.navigateToChart(),
+        child: Icon(Icons.insert_chart)
+      );
+    }else {
       return FloatingActionButton(
         onPressed: this.stop,
         child: Icon(Icons.stop)
@@ -149,38 +216,11 @@ class _BreatheScreenState extends State<BreatheScreen>
     );
   }
 
-  Timer _timer;
-  var _start = 5;
-  void startTimer() {
-    const oneSec = const Duration(seconds: 3);
-    _timer = Timer.periodic(
-      oneSec,
-      (Timer timer) => setState(
-        () {
-          if (_start < 1) {
-            timer.cancel();
-          } else {
-            _start = _start - 1;
-          }
-        },
-      ),
-    );
-  }
-
-  
-  breatheIn() {
-    if (_start == 0) {
-      setState(() {
-        display = "Breathe In";
-      });
-    }
-  }
 
   Widget foreground(BuildContext context) {
     if (display == null) {
       display = 'Get ready';
     }
-    breatheIn();
     return Container(
       alignment: Alignment.bottomCenter,
       child: Column(
@@ -204,7 +244,7 @@ class _BreatheScreenState extends State<BreatheScreen>
                       shape: BoxShape.circle,
                       color: Colors.yellow,
                     ),
-                    child: selected ? Text('') : Text('$_start'),
+                    child: countDown != null? Text('$countDown') : Text(''),
                     alignment: Alignment.center,
                   ),
                   Padding(
