@@ -10,8 +10,6 @@ class BreatheSession {
 class BreatheScreen extends StatefulWidget {
   BreatheScreen() : super();
 
-  final String title = "Breathe";
-
   @override
   _BreatheScreenState createState() => _BreatheScreenState();
 }
@@ -28,10 +26,46 @@ class _BreatheScreenState extends State<BreatheScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
+      backgroundColor: Colors.amber[100],
+      body: Stack(
+        children: [
+          this.background(context), //background image/animation
+          this.foreground(context) //everything in the foreground
+        ],
       ),
-      body: Center(
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: Icon(Icons.add),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+
+  Widget background(BuildContext context) {
+    return Container(
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            flex: 1,
+            child: FittedBox(
+              fit: BoxFit.fitWidth,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minWidth: 1, minHeight: 1),
+                child:  Image.asset('assets/images/mountains.png'),
+              )
+            ) 
+          ),
+        ],
+      )
+    );
+  }
+
+  Widget foreground(BuildContext context) {
+    return Container(
+      child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
