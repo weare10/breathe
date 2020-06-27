@@ -1,6 +1,7 @@
 import 'package:breathe/breathe_screen/timer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'dart:async';
 
 enum SessionState {
   Initial,
@@ -33,6 +34,7 @@ class _BreatheScreenState extends State<BreatheScreen>
   var sessionState = SessionState.Initial;
 
   final TimerModel timer = new TimerModel();
+  String display;
 
   //  Animation growingContainer;
   //  Animation growingCircle;
@@ -46,6 +48,7 @@ class _BreatheScreenState extends State<BreatheScreen>
     setState(() {
         selected = !selected;
         timer.stopwatch.start();
+        this.startTimer();
         this.sessionState = SessionState.Starting;
     });
   }
@@ -56,6 +59,34 @@ class _BreatheScreenState extends State<BreatheScreen>
         timer.stopwatch.stop();
         this.sessionState = SessionState.Ended;
     });
+  }
+
+  //Returns the appropriate instruction string based
+  //on the given state
+  String instructionText(SessionState state) {
+    String text;
+    switch (state) {
+      case SessionState.Initial:
+        text = "Press Play to Begin";
+        break;
+      case SessionState.BreathingIn:
+        text = "Breath in Slowly";
+        break;
+      case SessionState.BreathingOut:
+        text = "Breathe out Slowly";
+        break;
+      case SessionState.HoldBreathIn:
+      case SessionState.HoldBreathOut:
+        text = "Hold";
+        break;
+      case SessionState.Ended:
+        text = "Great Job!";
+        break;
+      default:
+        text = "INVALID STATE";
+        break;
+    }
+    return text;
   }
 
   //returns the action button based on session state
@@ -118,7 +149,38 @@ class _BreatheScreenState extends State<BreatheScreen>
     );
   }
 
+  Timer _timer;
+  var _start = 5;
+  void startTimer() {
+    const oneSec = const Duration(seconds: 3);
+    _timer = Timer.periodic(
+      oneSec,
+      (Timer timer) => setState(
+        () {
+          if (_start < 1) {
+            timer.cancel();
+          } else {
+            _start = _start - 1;
+          }
+        },
+      ),
+    );
+  }
+
+  
+  breatheIn() {
+    if (_start == 0) {
+      setState(() {
+        display = "Breathe In";
+      });
+    }
+  }
+
   Widget foreground(BuildContext context) {
+    if (display == null) {
+      display = 'Get ready';
+    }
+    breatheIn();
     return Container(
       alignment: Alignment.bottomCenter,
       child: Column(
@@ -142,18 +204,12 @@ class _BreatheScreenState extends State<BreatheScreen>
                       shape: BoxShape.circle,
                       color: Colors.yellow,
                     ),
+                    child: selected ? Text('') : Text('$_start'),
+                    alignment: Alignment.center,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0),
-                    child: selected
-                        ? Text(
-                            'Start Breathing Excercise',
-                            style: TextStyle(
-                              fontSize: 20,
-                            ),
-                            textAlign: TextAlign.center,
-                          )
-                        : Text(""),
+                    child: Text(instructionText(sessionState)),
                   ),
                 ],
               ),
