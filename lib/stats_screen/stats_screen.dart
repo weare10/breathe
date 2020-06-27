@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatefulWidget {
-  HomeScreen({Key key, this.title}) : super(key: key);
+class StatsScreen extends StatefulWidget {
+  StatsScreen({Key key, this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _StatsScreenState createState() => _StatsScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _StatsScreenState extends State<StatsScreen> {
   int _counter = 0;
 
   void _incrementCounter() {
