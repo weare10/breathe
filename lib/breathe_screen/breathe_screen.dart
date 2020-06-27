@@ -15,9 +15,18 @@ class BreatheScreen extends StatefulWidget {
   _BreatheScreenState createState() => _BreatheScreenState();
 }
 
-class _BreatheScreenState extends State<BreatheScreen> {
+class _BreatheScreenState extends State<BreatheScreen>
+    with SingleTickerProviderStateMixin {
   var selected = false;
-
+  AnimationController controller;
+//  Animation growingContainer;
+//  Animation growingCircle;
+//  @override
+//  void initState() {
+//    super.initState();
+//    controller = AnimationController(vsync: this, duration: Duration(seconds:3));
+//
+//  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,60 +60,73 @@ class _BreatheScreenState extends State<BreatheScreen> {
   //draw mountain view layer
   Widget _mountainLayer(BuildContext context) {
     return SizedBox.expand(
-      child: Column(
-        children : [
-          Spacer(),
-          Image.asset('assets/images/mountain_view.png'),
-        ]
-      )
+        child: Column(children: [
+      Spacer(),
+      Image.asset('assets/images/mountain_view.png'),
+    ]));
+  }
+
+  circle() {
+    CurvedAnimation(
+      parent: controller,
+      curve: Curves.easeIn,
+      reverseCurve: Curves.easeOut,
     );
   }
 
-
   Widget foreground(BuildContext context) {
-    AnimationController control;
     return Container(
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(top: 440),
-              child: AnimatedContainer(
-                duration: Duration(seconds: 1),
-                color: Colors.white,
-                width: 500,
-                height: selected ? 50 : 150,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    AnimatedContainer(
-                      duration: Duration(seconds: 1),
-                      width: selected ? 30 : 100,
-                      height: selected ? 30 : 100,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.yellow,
+      alignment: Alignment.bottomCenter,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(top: 440),
+            child: AnimatedContainer(
+              duration: Duration(seconds: 1),
+              color: Colors.white,
+              width: 500,
+              height: selected ? 50 : 150,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  AnimatedContainer(
+                    duration: Duration(seconds: 1),
+                    width: selected ? 30 : 100,
+                    height: selected ? 30 : 100,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.yellow,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: selected
+                        ? Text(
+                            'Start Breathing Excercise',
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                            textAlign: TextAlign.center,
+                          )
+                        : Text(""),
+                  ),
+                  Column(
+                    children: [
+                      Text(
+                        '00:00',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: selected
-                          ? Text(
-                              'Start Breathing Excercise',
-                              style: TextStyle(
-                                fontSize: 20,
-                              ),
-                              textAlign: TextAlign.center,
-                            )
-                          : Text(""),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
