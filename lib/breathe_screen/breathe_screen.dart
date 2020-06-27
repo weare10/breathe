@@ -1,3 +1,4 @@
+import 'package:breathe/breathe_screen/timer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -16,17 +17,20 @@ class BreatheScreen extends StatefulWidget {
 }
 
 class _BreatheScreenState extends State<BreatheScreen>
-    with SingleTickerProviderStateMixin {
+  with SingleTickerProviderStateMixin {
   var selected = false;
   AnimationController controller;
-//  Animation growingContainer;
-//  Animation growingCircle;
-//  @override
-//  void initState() {
-//    super.initState();
-//    controller = AnimationController(vsync: this, duration: Duration(seconds:3));
-//
-//  }
+
+  final TimerModel timer = new TimerModel();
+
+  //  Animation growingContainer;
+  //  Animation growingCircle;
+  //  @override
+  void initState() {
+    super.initState();
+    //  controller = AnimationController(vsync: this, duration: Duration(seconds:3));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,6 +45,7 @@ class _BreatheScreenState extends State<BreatheScreen>
         onPressed: () {
           setState(() {
             selected = !selected;
+            timer.stopwatch.start();
           });
         },
         child: Icon(Icons.add),
@@ -113,13 +118,7 @@ class _BreatheScreenState extends State<BreatheScreen>
                   ),
                   Column(
                     children: [
-                      Text(
-                        '00:00',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                        ),
-                      ),
+                      TimerText(dependencies: this.timer,)
                     ],
                   ),
                 ],
@@ -131,3 +130,5 @@ class _BreatheScreenState extends State<BreatheScreen>
     );
   }
 }
+
+
