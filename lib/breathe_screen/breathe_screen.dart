@@ -29,39 +29,34 @@ class _BreatheScreenState extends State<BreatheScreen> {
       backgroundColor: Colors.amber[100],
       body: Stack(
         children: [
-          this.background(context), //background image/animation
+          this._background(context), //background image/animation
           this.foreground(context) //everything in the foreground
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
-  Widget background(BuildContext context) {
-    return Container(
+  //draw background
+  Widget _background(BuildContext context) {
+    return Stack(
+      children: [
+        this._mountainLayer(context),
+      ],
+    );
+  }
+
+  //draw mountain view layer
+  Widget _mountainLayer(BuildContext context) {
+    return SizedBox.expand(
       child: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            flex: 1,
-            child: FittedBox(
-              fit: BoxFit.fitWidth,
-              child: ConstrainedBox(
-                constraints: BoxConstraints(minWidth: 1, minHeight: 1),
-                child:  Image.asset('assets/images/mountains.png'),
-              )
-            ) 
-          ),
-        ],
+        children : [
+          Spacer(),
+          Image.asset('assets/images/mountain_view.png'),
+        ]
       )
     );
   }
+
 
   Widget foreground(BuildContext context) {
     return Container(
