@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Breathe',
       routes: <String, WidgetBuilder> {
-        '/home': (BuildContext context) => HomeScreen(title: 'page A'),
+        '/home': (BuildContext context) => HomeScreen(),
         '/breathe': (BuildContext context) => BreatheScreen(),
         '/stats': (BuildContext context) => StatsScreen(title: 'page C'),
       },

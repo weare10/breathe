@@ -170,12 +170,7 @@ class _BreatheScreenState extends State<BreatheScreen>
       return FloatingActionButton(
           backgroundColor: Colors.yellow.shade900,
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => StatsScreen(),
-              ),
-            );
+            Navigator.pushNamed(context,'/stats');
           },
           child: Icon(Icons.insert_chart));
     } else {
