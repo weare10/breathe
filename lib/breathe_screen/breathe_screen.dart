@@ -39,21 +39,16 @@ class _BreatheScreenState extends State<BreatheScreen>
   String display;
   int countDown = 0;
   Timer countDownTimer;
+  var goUp = false;
 
   @override
   void initState() {
     super.initState();
   }
 
-  var goUp = false;
-  float() {
-    setState(() {
-      goUp = !goUp;
-    });
-  }
-
   start() {
     setState(() {
+      goUp = !goUp;
       selected = !selected;
       timer.stopwatch.start();
       this.beginExcerciseRoutine();
@@ -167,10 +162,14 @@ class _BreatheScreenState extends State<BreatheScreen>
       //Else show stop button
     } else if (state == SessionState.Ended) {
       return FloatingActionButton(
-          onPressed: this.navigateToChart(), child: Icon(Icons.insert_chart));
+          backgroundColor: Colors.yellow.shade900,
+          onPressed: this.navigateToChart(), child: Icon(Icons.insert_chart)
+        );
     } else {
       return FloatingActionButton(
-          onPressed: this.stop, child: Icon(Icons.stop));
+          backgroundColor: Colors.yellow.shade900,
+          onPressed: this.stop, child: Icon(Icons.stop)
+        );
     }
   }
 
@@ -188,7 +187,7 @@ class _BreatheScreenState extends State<BreatheScreen>
         ],
       ),
       floatingActionButton: this.actionButton(this.sessionState),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 
@@ -287,7 +286,7 @@ class _BreatheScreenState extends State<BreatheScreen>
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(top: 90.0, left: 300),
+            padding: const EdgeInsets.only(top: 50.0, left: 300),
             child: FlatButton(
               onPressed: () {
                 setState(() {
@@ -341,8 +340,7 @@ class _BreatheScreenState extends State<BreatheScreen>
                             shape: BoxShape.circle,
                             color: Colors.yellow,
                           ),
-                          child:
-                              countDown != null ? Text('$countDown') : Text(''),
+                          child: countDown != null ? Text('$countDown', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28),) : Text(''),
                           alignment: Alignment.center,
                         ),
                       ])),

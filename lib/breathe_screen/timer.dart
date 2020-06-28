@@ -69,7 +69,7 @@ class TimerTextState extends State<TimerText> {
       children: <Widget>[
           new RepaintBoundary(
             child: new SizedBox(
-              height: 82.0,
+              height: 90.0,
               child: new MinutesAndSeconds(dependencies: dependencies),
             ),
           ),
