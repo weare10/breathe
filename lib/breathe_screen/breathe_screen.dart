@@ -1,4 +1,5 @@
 import 'package:breathe/breathe_screen/timer.dart';
+import 'package:breathe/stats_screen/stats_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -64,9 +65,14 @@ class _BreatheScreenState extends State<BreatheScreen>
     });
   }
 
-  navigateToChart() {
-    //TODO
-  }
+//  navigateToChart() {
+//    Navigator.push(
+//      context,
+//      MaterialPageRoute(
+//        builder: (context) => StatsScreen(),
+//      ),
+//    );
+//  }
 
   final oneSec = const Duration(seconds: 1);
   beginExcerciseRoutine() {
@@ -163,13 +169,20 @@ class _BreatheScreenState extends State<BreatheScreen>
     } else if (state == SessionState.Ended) {
       return FloatingActionButton(
           backgroundColor: Colors.yellow.shade900,
-          onPressed: this.navigateToChart(), child: Icon(Icons.insert_chart)
-        );
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => StatsScreen(),
+              ),
+            );
+          },
+          child: Icon(Icons.insert_chart));
     } else {
       return FloatingActionButton(
           backgroundColor: Colors.yellow.shade900,
-          onPressed: this.stop, child: Icon(Icons.stop)
-        );
+          onPressed: this.stop,
+          child: Icon(Icons.stop));
     }
   }
 
@@ -196,10 +209,7 @@ class _BreatheScreenState extends State<BreatheScreen>
   Widget _background(BuildContext context) {
     return Stack(
       children: [
-        Align(
-          alignment: Alignment.center,
-          child: this._mountainLayer(context)
-        ),
+        Align(alignment: Alignment.center, child: this._mountainLayer(context)),
         Align(
           alignment: Alignment.center,
           //Avatar over the Mountains
@@ -210,7 +220,7 @@ class _BreatheScreenState extends State<BreatheScreen>
             }),
             padding: EdgeInsets.only(
               top: goUp ? 0 : 50,
-              bottom: goUp ? 250 : 200,
+              bottom: goUp ? 250 : 150,
             ),
             child: FlatButton(
               onPressed: () {
@@ -222,8 +232,6 @@ class _BreatheScreenState extends State<BreatheScreen>
                 image: person,
                 height: 200,
               ),
-//                width: 100,
-//                height: 100,
             ),
           ),
         ),
@@ -234,7 +242,7 @@ class _BreatheScreenState extends State<BreatheScreen>
   //draw mountain view layer
   Widget _mountainLayer(BuildContext context) {
     return SizedBox.expand(
-        child: Image.asset('assets/images/mountain_view.png'),
+      child: Image.asset('assets/images/mountain_view.png'),
     );
   }
 
@@ -344,7 +352,14 @@ class _BreatheScreenState extends State<BreatheScreen>
                             shape: BoxShape.circle,
                             color: Colors.yellow,
                           ),
-                          child: countDown != null ? Text('$countDown', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28),) : Text(''),
+                          child: countDown != null
+                              ? Text(
+                                  '$countDown',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 28),
+                                )
+                              : Text(''),
                           alignment: Alignment.center,
                         ),
                       ])),
