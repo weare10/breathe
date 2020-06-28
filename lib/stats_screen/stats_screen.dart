@@ -10,6 +10,13 @@ class StatsScreen extends StatefulWidget {
   _StatsScreenState createState() => _StatsScreenState();
 }
 
+var selectedButton = 'This Session';
+var length = "Length of Session";
+var time = "1:20";
+var deepNum = "10";
+var streak = "Current Streak";
+var streakNum = "2";
+
 class _StatsScreenState extends State<StatsScreen> {
   @override
   Widget build(BuildContext context) {
@@ -28,16 +35,47 @@ class _StatsScreenState extends State<StatsScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text(
-                  'This Session',
-                  style: TextStyle(
-                    fontSize: 25,
+                FlatButton(
+                  onPressed: () {
+                    setState(() {
+                      selectedButton = "This Session";
+                      selectedButton = 'This Session';
+                      length = "Length of Session";
+                      time = "1:20";
+                      deepNum = "10";
+                      streak = "Current Streak";
+                      streakNum = "2";
+                    });
+                  },
+                  child: Text(
+                    'This Session',
+                    style: TextStyle(
+                      fontSize: 25,
+                      color: selectedButton == "This Session"
+                          ? Colors.yellow.shade900
+                          : Colors.black,
+                    ),
                   ),
                 ),
-                Text(
-                  'All Time',
-                  style: TextStyle(
-                    fontSize: 25,
+                FlatButton(
+                  onPressed: () {
+                    setState(() {
+                      selectedButton = "All Time";
+                      length = "Total Session time";
+                      time = "6:00";
+                      deepNum = "50";
+                      streak = "Number of Sessions";
+                      streakNum = "5";
+                    });
+                  },
+                  child: Text(
+                    'All Time',
+                    style: TextStyle(
+                      fontSize: 25,
+                      color: selectedButton == "All Time"
+                          ? Colors.yellow.shade900
+                          : Colors.black,
+                    ),
                   ),
                 ),
               ],
@@ -62,11 +100,11 @@ class _StatsScreenState extends State<StatsScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Length of Session',
+                        length,
                         style: TextStyle(fontSize: 25),
                       ),
                       Text(
-                        '1:20',
+                        time,
                         style: TextStyle(
                           fontSize: 25,
                         ),
@@ -97,7 +135,7 @@ class _StatsScreenState extends State<StatsScreen> {
                               ),
                             ),
                             Text(
-                              '10',
+                              deepNum,
                               style: TextStyle(
                                 fontSize: 35,
                               ),
@@ -116,13 +154,13 @@ class _StatsScreenState extends State<StatsScreen> {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                'Current Streak',
-                                style: TextStyle(fontSize: 25),
+                                streak,
+                                style: TextStyle(fontSize: 20),
                                 textAlign: TextAlign.center,
                               ),
                             ),
                             Text(
-                              '1',
+                              streakNum,
                               style: TextStyle(
                                 fontSize: 35,
                               ),
@@ -136,7 +174,6 @@ class _StatsScreenState extends State<StatsScreen> {
               ),
             ],
           )
-          
         ],
       ),
     );
