@@ -40,20 +40,16 @@ class _BreatheScreenState extends State<BreatheScreen>
   int countDown = 0;
   Timer countDownTimer;
 
+  @override
   void initState() {
     super.initState();
-    float();
   }
 
+  var goUp = false;
   float() {
-    if (goDown == 50) {
-      goDown = 0;
-      goUp = 50;
-    }
-    if (goUp == 50) {
-      goDown = 50;
-      goUp = 0;
-    }
+    setState(() {
+      goUp = !goUp;
+    });
   }
 
   start() {
@@ -159,9 +155,13 @@ class _BreatheScreenState extends State<BreatheScreen>
   Widget actionButton(SessionState state) {
     //if state is initial, show start button
     if (state == SessionState.Initial) {
-      return FloatingActionButton(
-        onPressed: this.start,
-        child: Icon(Icons.play_arrow),
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: FloatingActionButton(
+          backgroundColor: Colors.yellow.shade900,
+          onPressed: this.start,
+          child: Icon(Icons.play_arrow),
+        ),
       );
 
       //Else show stop button
@@ -192,8 +192,7 @@ class _BreatheScreenState extends State<BreatheScreen>
     );
   }
 
-  double goUp = 0;
-  double goDown = 50;
+  var person = AssetImage('assets/images/guy_meditate.png');
   //draw background
   Widget _background(BuildContext context) {
     return Stack(
@@ -201,13 +200,28 @@ class _BreatheScreenState extends State<BreatheScreen>
         this._mountainLayer(context),
         Align(
           alignment: Alignment.center,
-          child: AnimatedPadding(
-            padding: EdgeInsets.only(top: goDown, bottom: goUp),
-            duration: Duration(seconds: 1),
-            child: Container(
-              color: Colors.black,
-              width: 100,
-              height: 100,
+          //Avatar over the Mountains
+          child: AnimatedContainer(
+            duration: Duration(seconds: 2),
+            onEnd: () => setState(() {
+              goUp = !goUp;
+            }),
+            padding: EdgeInsets.only(
+              top: goUp ? 0 : 50,
+              bottom: goUp ? 50 : 0,
+            ),
+            child: FlatButton(
+              onPressed: () {
+                setState(() {
+                  goUp = !goUp;
+                });
+              },
+              child: Image(
+                image: person,
+                height: 200,
+              ),
+//                width: 100,
+//                height: 100,
             ),
           ),
         ),
@@ -273,7 +287,35 @@ class _BreatheScreenState extends State<BreatheScreen>
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.only(top: 440),
+            padding: const EdgeInsets.only(top: 90.0, left: 300),
+            child: FlatButton(
+              onPressed: () {
+                setState(() {
+                  person = AssetImage('assets/images/girl_meditate.png');
+                });
+              },
+              child: Image(
+                image: AssetImage('assets/images/girl_meditate.png'),
+                height: 50,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0, left: 300),
+            child: FlatButton(
+              onPressed: () {
+                setState(() {
+                  person = AssetImage('assets/images/guy_meditate.png');
+                });
+              },
+              child: Image(
+                image: AssetImage('assets/images/guy_meditate.png'),
+                height: 50,
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 225),
             child: AnimatedContainer(
               duration: Duration(seconds: 5),
               color: Colors.white,
