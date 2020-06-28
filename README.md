@@ -29,4 +29,5 @@ meditation, save the world, people, mental health, animation
 ## Screnshots
 <img src="assets/screenshots/home.png" alt="drawing" height="400"/>
 <img src="assets/screenshots/Breathe_app_demo.gif" alt="drawing" height="400"/>
+<img src="assets/screenshots/stats.png" alt="drawing" height="400"/>
 
