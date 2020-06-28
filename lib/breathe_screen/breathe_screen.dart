@@ -196,7 +196,10 @@ class _BreatheScreenState extends State<BreatheScreen>
   Widget _background(BuildContext context) {
     return Stack(
       children: [
-        this._mountainLayer(context),
+        Align(
+          alignment: Alignment.center,
+          child: this._mountainLayer(context)
+        ),
         Align(
           alignment: Alignment.center,
           //Avatar over the Mountains
@@ -207,7 +210,7 @@ class _BreatheScreenState extends State<BreatheScreen>
             }),
             padding: EdgeInsets.only(
               top: goUp ? 0 : 50,
-              bottom: goUp ? 50 : 0,
+              bottom: goUp ? 250 : 200,
             ),
             child: FlatButton(
               onPressed: () {
@@ -231,10 +234,8 @@ class _BreatheScreenState extends State<BreatheScreen>
   //draw mountain view layer
   Widget _mountainLayer(BuildContext context) {
     return SizedBox.expand(
-        child: Column(children: [
-      Spacer(),
-      Image.asset('assets/images/mountain_view.png'),
-    ]));
+        child: Image.asset('assets/images/mountain_view.png'),
+    );
   }
 
   circle() {
@@ -319,13 +320,16 @@ class _BreatheScreenState extends State<BreatheScreen>
               duration: Duration(seconds: 5),
               color: Colors.white,
               width: 500,
-              height: 150,
+              height: 175,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(top: 15),
-                    child: Text(instructionText(sessionState)),
+                    child: Text(
+                      instructionText(sessionState),
+                      style: TextStyle(fontSize: 28),
+                    ),
                   ),
                   Expanded(
                       child: Column(
