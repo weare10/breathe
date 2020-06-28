@@ -24,7 +24,7 @@ No one likes to experience negative feelings and they can get in the way of you 
 meditation, save the world, people, mental health, animation
 
 ## Pitch Video:  
-<iframe width="560" height="315" src="https://www.youtube.com/embed/aESHqrkaLqU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+[![Alt text](https://img.youtube.com/vi/aESHqrkaLqU/0.jpg)](https://www.youtube.com/watch?v=aESHqrkaLqU)
 
 ## Screnshots
 <img src="assets/screenshots/home.png" alt="drawing" height="400"/>
