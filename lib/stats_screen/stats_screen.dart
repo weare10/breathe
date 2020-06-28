@@ -24,7 +24,7 @@ class _StatsScreenState extends State<StatsScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(bottom: 50.0),
+            padding: const EdgeInsets.only(bottom: 40.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -41,6 +41,13 @@ class _StatsScreenState extends State<StatsScreen> {
                   ),
                 ),
               ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 25.0),
+            child: Image(
+              image: AssetImage('assets/images/trophy.png'),
+              height: 65,
             ),
           ),
           Card(
@@ -83,7 +90,7 @@ class _StatsScreenState extends State<StatsScreen> {
                             'Deep Breaths Taken',
                             softWrap: true,
                             textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 25),
+                            style: TextStyle(fontSize: 20),
                           ),
                         ),
                         Text(
