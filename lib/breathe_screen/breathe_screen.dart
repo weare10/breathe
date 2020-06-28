@@ -13,6 +13,7 @@ enum SessionState {
   Ended,
   Invalid
 }
+
 //model for a breathing session
 class BreatheSession {
   int inBreaths; //how many in breaths
@@ -28,7 +29,7 @@ class BreatheScreen extends StatefulWidget {
 }
 
 class _BreatheScreenState extends State<BreatheScreen>
-  with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   var selected = false;
   AnimationController controller;
 
@@ -39,29 +40,36 @@ class _BreatheScreenState extends State<BreatheScreen>
   int countDown = 0;
   Timer countDownTimer;
 
-  //  Animation growingContainer;
-  //  Animation growingCircle;
-  //  @override
   void initState() {
     super.initState();
-    //  controller = AnimationController(vsync: this, duration: Duration(seconds:3));
+    float();
+  }
+
+  float() {
+    if (goDown == 50) {
+      goDown = 0;
+      goUp = 50;
+    }
+    if (goUp == 50) {
+      goDown = 50;
+      goUp = 0;
+    }
   }
 
   start() {
     setState(() {
-        selected = !selected;
-        timer.stopwatch.start();
-        this.beginExcerciseRoutine();
+      selected = !selected;
+      timer.stopwatch.start();
+      this.beginExcerciseRoutine();
     });
   }
 
-
   stop() {
     setState(() {
-        timer.stopwatch.stop();
-        this.sessionState = SessionState.Ended;
-        this.countDownTimer.cancel();
-        this.countDown = null;
+      timer.stopwatch.stop();
+      this.sessionState = SessionState.Ended;
+      this.countDownTimer.cancel();
+      this.countDown = null;
     });
   }
 
@@ -69,26 +77,23 @@ class _BreatheScreenState extends State<BreatheScreen>
     //TODO
   }
 
-
   final oneSec = const Duration(seconds: 1);
-  beginExcerciseRoutine(){
+  beginExcerciseRoutine() {
     this.sessionState = nextState(sessionState);
     countDown = 5;
-    countDownTimer = Timer.periodic(oneSec, (timer) { 
+    countDownTimer = Timer.periodic(oneSec, (timer) {
       //Decrement the countDown
       setState(() {
         countDown--;
-        if (countDown < 0){
+        if (countDown < 0) {
           countDown = 5;
           sessionState = nextState(sessionState);
         }
-      
       });
-
     });
   }
 
-  SessionState nextState(SessionState state){
+  SessionState nextState(SessionState state) {
     SessionState next;
     switch (state) {
       case SessionState.Initial:
@@ -104,7 +109,7 @@ class _BreatheScreenState extends State<BreatheScreen>
         next = SessionState.HoldBreathOut;
         break;
       case SessionState.HoldBreathIn:
-      next = SessionState.BreathingOut;
+        next = SessionState.BreathingOut;
         break;
       case SessionState.HoldBreathOut:
         next = SessionState.BreathingIn;
@@ -119,7 +124,6 @@ class _BreatheScreenState extends State<BreatheScreen>
     return next;
   }
 
-
   //Returns the appropriate instruction string based
   //on the given state
   String instructionText(SessionState state) {
@@ -129,8 +133,8 @@ class _BreatheScreenState extends State<BreatheScreen>
         text = "Press Play to Begin";
         break;
       case SessionState.Starting:
-      text = "Get Ready...";
-      break;
+        text = "Get Ready...";
+        break;
       case SessionState.BreathingIn:
         text = "Breath in Slowly";
         break;
@@ -152,25 +156,21 @@ class _BreatheScreenState extends State<BreatheScreen>
   }
 
   //returns the action button based on session state
-  Widget actionButton(SessionState state){
+  Widget actionButton(SessionState state) {
     //if state is initial, show start button
     if (state == SessionState.Initial) {
       return FloatingActionButton(
         onPressed: this.start,
-        child: Icon(Icons.play_arrow), 
+        child: Icon(Icons.play_arrow),
       );
-    
-    //Else show stop button
+
+      //Else show stop button
     } else if (state == SessionState.Ended) {
       return FloatingActionButton(
-        onPressed: this.navigateToChart(),
-        child: Icon(Icons.insert_chart)
-      );
-    }else {
+          onPressed: this.navigateToChart(), child: Icon(Icons.insert_chart));
+    } else {
       return FloatingActionButton(
-        onPressed: this.stop,
-        child: Icon(Icons.stop)
-      );
+          onPressed: this.stop, child: Icon(Icons.stop));
     }
   }
 
@@ -181,7 +181,9 @@ class _BreatheScreenState extends State<BreatheScreen>
       body: Stack(
         children: [
           this._background(context), //background image/animation
-          TimerText(dependencies: this.timer,),
+          TimerText(
+            dependencies: this.timer,
+          ),
           this.foreground(context) //everything in the foreground
         ],
       ),
@@ -190,6 +192,8 @@ class _BreatheScreenState extends State<BreatheScreen>
     );
   }
 
+  double goUp = 0;
+  double goDown = 50;
   //draw background
   Widget _background(BuildContext context) {
     return Stack(
@@ -197,7 +201,15 @@ class _BreatheScreenState extends State<BreatheScreen>
         this._mountainLayer(context),
         Align(
           alignment: Alignment.center,
-          child: Container(color: Colors.black, width: 100, height: 100,)
+          child: AnimatedPadding(
+            padding: EdgeInsets.only(top: goDown, bottom: goUp),
+            duration: Duration(seconds: 1),
+            child: Container(
+              color: Colors.black,
+              width: 100,
+              height: 100,
+            ),
+          ),
         ),
       ],
     );
@@ -227,8 +239,8 @@ class _BreatheScreenState extends State<BreatheScreen>
         diameter = 30;
         break;
       case SessionState.Starting:
-      diameter = 30;
-      break;
+        diameter = 30;
+        break;
       case SessionState.BreathingIn:
         diameter = 100;
         break;
@@ -250,7 +262,6 @@ class _BreatheScreenState extends State<BreatheScreen>
     }
     return diameter;
   }
-
 
   Widget foreground(BuildContext context) {
     if (display == null) {
@@ -276,10 +287,10 @@ class _BreatheScreenState extends State<BreatheScreen>
                     child: Text(instructionText(sessionState)),
                   ),
                   Expanded(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
+                      child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
                         AnimatedContainer(
                           duration: Duration(seconds: 5),
                           width: getDiameter(sessionState),
@@ -288,12 +299,11 @@ class _BreatheScreenState extends State<BreatheScreen>
                             shape: BoxShape.circle,
                             color: Colors.yellow,
                           ),
-                          child: countDown != null? Text('$countDown') : Text(''),
+                          child:
+                              countDown != null ? Text('$countDown') : Text(''),
                           alignment: Alignment.center,
                         ),
-                      ]
-                    )
-                  ),
+                      ])),
                 ],
               ),
             ),
@@ -303,5 +313,3 @@ class _BreatheScreenState extends State<BreatheScreen>
     );
   }
 }
-
-
