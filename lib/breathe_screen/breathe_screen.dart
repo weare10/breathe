@@ -133,7 +133,7 @@ class _BreatheScreenState extends State<BreatheScreen>
         text = "Get Ready...";
         break;
       case SessionState.BreathingIn:
-        text = "Breath in Slowly";
+        text = "Breathe in Slowly";
         break;
       case SessionState.BreathingOut:
         text = "Breathe out Slowly";
