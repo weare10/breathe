@@ -1,4 +1,6 @@
 import 'package:breathe/breathe_screen/breathe_screen.dart';
+import 'package:breathe/home_screen/home.dart';
+import 'package:breathe/stats_screen/stats_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,6 +13,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Breathe',
+      routes: <String, WidgetBuilder> {
+        '/home': (BuildContext context) => HomeScreen(title: 'page A'),
+        '/breathe': (BuildContext context) => BreatheScreen(),
+        '/stats': (BuildContext context) => StatsScreen(title: 'page C'),
+      },
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -27,7 +34,7 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: BreatheScreen(),
+      home: HomeScreen(title: "Breathe"),
     );
   }
 }

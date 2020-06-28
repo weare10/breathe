@@ -1,3 +1,5 @@
+
+import 'package:breathe/breathe_screen/breathe_screen.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -21,28 +23,43 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      
+      backgroundColor: Colors.white,
+      body: Container(
+        child: _body(),
+      )
+       // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+
+  Widget _body() {
+    return Stack(
+      children: [
+        _header()
+      ],
+    );
+  }
+
+  Widget _header(){
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Image.asset('assets/images/breathe_header.png'),
+        Padding(
+          padding: EdgeInsets.only(left: 20, right: 20),
+          child: Image.asset('assets/images/breathe_title.png'),
+        ),
+        Spacer(),
+        FlatButton(
+          color: Colors.amber[200],
+          padding: EdgeInsets.only(top: 20, bottom: 20, left: 40, right: 40),
+          child: Text("Login", style: TextStyle(fontSize: 20),),
+          onPressed: () => Navigator.pushNamed(context, '/breathe'),
+        ),
+        Spacer(),
+      ],
+    );
+  }
+
+
 }
